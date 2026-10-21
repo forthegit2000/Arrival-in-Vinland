@@ -1,0 +1,247 @@
+/* All literal CSS colors belong here. Component styles use these named variables.
+ * Tune the material colors and document overrides here; component files contain no color literals. */
+:root {
+  /* Shared theme and controls */
+  --ink: #f3e9d6;
+  --muted: #c5b79e;
+  --accent: #dfbc7c;
+  --line: #706047;
+  --panel: #29261f;
+  --dark: #171814;
+  --button-bg-top: #403b2f;
+  --button-bg-bottom: #292820;
+  --button-border: #927951;
+  --button-border-dark: #111510;
+  --button-hover-top: #514733;
+  --button-hover-bottom: #363125;
+  --button-hover-border: #d5b578;
+  --text-bright: #fff5df;
+  --button-selected-top: #34554b;
+  --button-selected-bottom: #203e36;
+  --button-selected-border: #dcc18b;
+  --button-selected-inset: #162c25;
+  --focus-ring: #f5d797;
+  --meter-track: #131b15;
+  --meter-border: #706447;
+  --meter-fill: #9aa962;
+  --key-text: #e2c68f;
+  --primary-button-top: #3c6051;
+  --primary-button-bottom: #244237;
+  --primary-button-border: #cfb781;
+  --primary-button-hover-top: #4a705b;
+  --primary-button-hover-bottom: #315340;
+  --control-accent: #c2a168;
+  --input-border: #8c7752;
+  --input-bg: #191d17;
+  --transparent: transparent;
+
+  /* Resource bar and settlement console */
+  --topbar-bg-top: #302d25;
+  --topbar-bg-bottom: #171c18;
+  --topbar-border: #0e140f;
+  --topbar-highlight: #a48959;
+  --topbar-title: #e9d2a3;
+  --resource-divider: #66573e;
+  --resource-hover-bg: #d9b87612;
+  --resource-warning: #ffbb87;
+  --resource-tooltip-border: #a88b59;
+  --resource-tooltip-bg: #25291f;
+  --shadow-soft: #090b0799;
+  --console-bg-top: #302e25;
+  --console-bg-bottom: #1d241d;
+  --console-border: #a78b56;
+  --console-title: #e9d3a5;
+  --section-divider: #111a12;
+  --section-highlight: #766a4c;
+  --minimap-border: #11180f;
+  --minimap-highlight: #a08d62;
+  --console-section-border: #6b6045;
+  --statusbar-border: #706043;
+  --statusbar-bg: #141b15;
+  --pause-text: #f2c483;
+  --pause-border: #ae874b;
+  --console-mobile-border: #8c764f;
+
+  /* Construction controls */
+  --build-category-selected-bg: #304b3b;
+  --build-category-selected-border: #c7aa70;
+  --build-scrollbar-thumb: #9d845a;
+  --build-scrollbar-track: #181f17;
+  --build-button-top: #413e2d;
+  --build-button-bottom: #252c20;
+  --build-button-border: #9e875a;
+  --build-button-border-dark: #10170f;
+  --build-button-inset: #625b3d;
+  --build-button-hover-top: #57513a;
+  --build-button-hover-bottom: #323d2a;
+  --build-button-selected-inset: #183b29;
+  --build-button-disabled-text: #b5ae9a;
+  --build-cost-text: #dfd0ae;
+  --build-notice-text: #f2deab;
+  --build-invalid-text: #ffb395;
+
+  /* Draggable settlement windows */
+  --window-bg: #252820;
+  --window-border: #ac8e55;
+  --window-border-dark: #0e160f;
+  --shadow-window: #080d08bb;
+  --window-title-top: #41392a;
+  --window-title-bottom: #25291e;
+  --window-title-border: #ac8e55;
+  --window-pause-text: #c8ba9c;
+  --window-tabs-border: #786443;
+  --window-tabs-bg: #1d241c;
+  --window-scrollbar-thumb: #a28b60;
+  --window-scrollbar-track: #1c2119;
+  --window-heading: #e1c28a;
+  --window-body-text: #e0d4bc;
+
+  /* Settlement page contents */
+  --stat-card-border: #726346;
+  --stat-card-bg: #22291e;
+  --room-card-border: #9c8256;
+  --room-card-bg: #1a261b;
+  --room-card-heading: #e6d2a9;
+  --table-heading: #dcc18c;
+  --help-text: #e1d4b9;
+  --policy-accent: #c1a065;
+  --policy-bg: #2e3423;
+  --household-bg: #1e271c;
+  --warning-text: #ffc093;
+  --goal-banner-bg: #2b3c28;
+
+  /* Start screen and game menus */
+  --quit-button-border: #b18060;
+  --title-screen-bg: #121a14;
+  --title-card-border: #b5955d;
+  --menu-window-border: #a58b5a;
+  --shadow-menu: #050905bb;
+  --menu-backdrop: #080e0ad9;
+  --menu-header-bg: #322f23;
+  --save-card-bg: #1f291e;
+  --save-card-border: #706448;
+  --save-kind-text: #dfc58d;
+  --save-recovery-text: #e5c58b;
+  --menu-notice-bg: #343721;
+  --menu-notice-border: #a58b55;
+
+  /* World overlays and inspector */
+  --world-label-hover-bg: #253021e8;
+  --world-label-hover-text: #f6e6c5;
+  --world-label-hover-border: #a99261;
+  --camera-controls-bg: #22291d;
+  --camera-controls-border: #91794f;
+  --terrain-credit-text: #f5e6c8;
+  --terrain-credit-bg: #20291de8;
+  --terrain-credit-border: #ae945e;
+  --inspector-title-top: #423b2b;
+  --inspector-title-bottom: #283022;
+  --inspector-title-border: #9c8351;
+  --walk-panel-bg: #20291af5;
+  --overlay-border: #b1955d;
+  --walk-panel-shadow: #0e170c;
+  --event-notice-bg: #343324;
+  --event-notice-border: #b6975e;
+  --event-notice-accent: #e0b76d;
+  --event-notice-shadow: #10190c88;
+  --toast-bg: #20291bf5;
+  --toast-border: #a58b58;
+  --loading-bg: #1d261b;
+  --loading-title: #e4cc95;
+  --error-border: #d78d69;
+  --error-text: #ffc5a5;
+
+  /* Walking controls and worker selection */
+  --walk-hint-text: #eddbb6;
+  --conversation-name: #e3c68c;
+  --selection-border: #ebd6a0;
+  --selection-bg: #c4ad6230;
+
+  /* Hearth controls */
+  --hearth-panel-bg: #25291cf5;
+  --hearth-value: #ffd38a;
+
+  /* Cheat controls */
+  --cheat-panel-bg: #252c1ef7;
+  --cheat-panel-border: #d8af68;
+  --cheat-help-text: #dfc28f;
+  --cheat-active-text: #ffda8d;
+  --cheat-active-border: #ad874d;
+
+  /* Atlantic chart and voyage panels */
+  --atlantic-header-border: #a08856;
+  --atlantic-ocean: #183334;
+  --atlantic-label-text: #eee1c5;
+  --atlantic-route: #adb79b;
+  --atlantic-route-selected: #efcf8a;
+  --atlantic-harbour: #e8cd8f;
+  --atlantic-harbour-border: #243326;
+  --atlantic-ship: #b4dac2;
+  --atlantic-ship-border: #eff2ce;
+  --atlantic-home-border: #1b3026;
+  --atlantic-legend-bg: #202d21ed;
+  --atlantic-legend-border: #978459;
+  --atlantic-sources-bg: #1e2a1ee8;
+  --atlantic-sources-text: #d1c8af;
+  --voyage-route-border: #978459;
+
+  /* Subtle CSS-only materials: no downloaded textures or runtime asset requests. */
+  --button-text: #f3e9d6;
+  --input-text: #f3e9d6;
+  --material-glint: #eed5a00c;
+  --material-groove: #050c0930;
+  --frame-glow: #deba751f;
+  --frame-shade: #080e09a8;
+  --wood-grain: repeating-linear-gradient(
+    176deg,
+    var(--transparent) 0 3px,
+    var(--material-glint) 4px,
+    var(--transparent) 5px 9px,
+    var(--material-groove) 10px,
+    var(--transparent) 11px 19px
+  );
+  --metal-sheen: linear-gradient(
+    115deg,
+    var(--material-glint),
+    var(--transparent) 36% 65%,
+    var(--material-glint)
+  );
+  --paper: #dfcda7;
+  --paper-light: #eee0be;
+  --paper-edge: #bd9d64;
+  --paper-fiber: #7050240a;
+  --paper-ink: #35291a;
+  --paper-muted: #645138;
+  --paper-heading: #493016;
+  --paper-rule: #ac926a;
+  --paper-link: #694010;
+  --paper-warning: #833c1b;
+  --paper-card: #d5c199;
+  --paper-texture:
+    repeating-linear-gradient(
+      3deg,
+      var(--transparent) 0 4px,
+      var(--paper-fiber) 5px,
+      var(--transparent) 6px 11px
+    ),
+    radial-gradient(ellipse at 45% 30%, var(--paper-light), var(--paper) 65%, var(--paper-edge));
+}
+
+/* Document content has dark ink; its frame and controls retain the dark metal theme. */
+dialog.document-window #modal-content {
+  --ink: var(--paper-ink);
+  --muted: var(--paper-muted);
+  --accent: var(--paper-link);
+  --line: var(--paper-rule);
+  --window-heading: var(--paper-heading);
+  --window-body-text: var(--paper-ink);
+  --help-text: var(--paper-ink);
+  --table-heading: var(--paper-heading);
+  --stat-card-bg: var(--paper-card);
+  --stat-card-border: var(--paper-rule);
+  --household-bg: var(--paper-card);
+  --policy-bg: var(--paper-card);
+  --policy-accent: var(--paper-link);
+  --warning-text: var(--paper-warning);
+  --goal-banner-bg: var(--paper-card);
+}

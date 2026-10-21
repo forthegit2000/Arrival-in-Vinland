@@ -1,0 +1,74 @@
+/* Named-worker orders replace the always-open building catalogue. */
+.worker-orders {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 0;
+  overflow: auto;
+}
+
+.worker-orders > strong {
+  font-size: calc(18px * var(--text-scale));
+}
+
+.worker-orders > span {
+  font-size: calc(14px * var(--text-scale));
+}
+
+.worker-actions {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.worker-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 42px;
+  white-space: nowrap;
+}
+
+.worker-gathering-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.worker-gathering-actions > span {
+  margin-left: 4px;
+}
+
+.worker-actions img {
+  width: 28px;
+  height: 28px;
+}
+
+#construction-palette {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#worker-selection-box {
+  position: fixed;
+  z-index: 4;
+  border: 1px solid var(--selection-border);
+  background: var(--selection-bg);
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  .worker-orders {
+    gap: 4px;
+  }
+
+  #worker-order-status {
+    display: none;
+  }
+}

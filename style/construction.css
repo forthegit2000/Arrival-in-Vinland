@@ -1,0 +1,214 @@
+/* Build categories, illustrated buttons, and construction cost details. Responsive rules stay with their component. */
+
+.selection-panel {
+  /* Manual adjustments: illustration limits and the equal gaps above/below it. */
+  --build-icon-width: 94px;
+  --build-icon-height: 76px;
+  --build-icon-gap: 4px;
+
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 0 8px;
+  border-right: 2px solid var(--section-divider);
+  box-shadow: inset -1px 0 var(--section-highlight);
+}
+
+.build-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.selection-panel[data-context='none'] {
+  display: none;
+}
+
+.selection-empty {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.selection-empty button {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 3px 5px;
+}
+
+.selection-empty img {
+  width: 28px;
+  height: 28px;
+}
+
+.build-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  flex-shrink: 0;
+}
+
+.build-tabs > button {
+  border: 1px solid var(--transparent);
+  background: none;
+  padding: 3px 10px;
+  min-height: 28px;
+}
+
+.build-tabs > button.active {
+  background: var(--build-category-selected-bg);
+  border-color: var(--build-category-selected-border);
+  box-shadow: inset 0 0 0 1px var(--button-selected-inset);
+}
+
+.palette-scroll-controls {
+  margin-left: auto;
+  display: flex;
+  gap: 3px;
+}
+
+.palette-scroll-controls button {
+  min-width: 30px;
+  min-height: 28px;
+  padding: 0 6px;
+  font-size: 20px;
+}
+
+.build-scroll {
+  --build-list-height: calc(88px * var(--text-scale));
+
+  flex: 1;
+  display: flex;
+  gap: 5px;
+  min-height: var(--build-list-height);
+  height: var(--build-list-height);
+  overflow: auto hidden;
+  padding: 2px 1px 5px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--build-scrollbar-thumb) var(--build-scrollbar-track);
+}
+
+.build-card {
+  flex: 0 0 calc(148px * var(--text-scale));
+  min-width: 0;
+  padding: 7px 8px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-items: center;
+  justify-items: center;
+  gap: var(--build-icon-gap);
+  text-align: center;
+  background:
+    var(--metal-sheen), linear-gradient(var(--build-button-top), var(--build-button-bottom));
+  border: 1px solid var(--build-button-border);
+  border-bottom-color: var(--build-button-border-dark);
+  border-right-color: var(--build-button-border-dark);
+  box-shadow: inset 0 0 0 1px var(--build-button-inset);
+}
+
+.build-card:hover {
+  background:
+    var(--metal-sheen),
+    linear-gradient(var(--build-button-hover-top), var(--build-button-hover-bottom));
+}
+
+.build-card.active {
+  box-shadow: inset 0 0 0 1px var(--build-button-selected-inset);
+}
+
+.build-card.unavailable {
+  color: var(--build-button-disabled-text);
+}
+
+.build-card-title {
+  font-size: var(--font-small);
+  font-weight: 600;
+  line-height: 1.15;
+  width: 100%;
+}
+
+.build-hours {
+  color: var(--build-cost-text);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+}
+
+.building-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.building-icon img {
+  display: block;
+  width: calc(var(--build-icon-width) * var(--text-scale));
+  height: 100%;
+  max-width: 100%;
+  max-height: calc(var(--build-icon-height) * var(--text-scale));
+  object-fit: contain;
+}
+
+.build-cost {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 13px;
+  font-size: var(--font-small);
+}
+
+.build-cost b {
+  color: var(--build-notice-text);
+  font-weight: 600;
+}
+
+.build-cost .insufficient,
+.build-cost .insufficient b {
+  color: var(--build-invalid-text);
+}
+
+@media (max-width: 900px) {
+  .build-tabs > button {
+    padding-inline: 7px;
+  }
+}
+
+@media (max-width: 700px) {
+  .selection-panel {
+    grid-column: 1;
+    grid-row: 2;
+    border-right: 0;
+    box-shadow: none;
+    padding-inline: 6px;
+  }
+  .build-tabs {
+    padding: 3px 0;
+  }
+  .build-scroll {
+    --build-list-height: calc(76px * var(--text-scale));
+  }
+  .build-card {
+    flex-basis: calc(144px * var(--text-scale));
+  }
+  .build-tabs > button {
+    padding-inline: 9px;
+  }
+}
+
+@media (max-height: 650px) and (min-width: 701px) {
+  .build-scroll {
+    --build-list-height: calc(70px * var(--text-scale));
+  }
+}

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 84" fill="none">
+  <ellipse cx="48" cy="72" rx="43" ry="7" fill="#182b32" opacity=".35" stroke="none" />
+  <g stroke="#344438" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+    <g transform="translate(9 16) scale(.8)">
+      <g id="turf-hall">
+        <path d="M10 42 52 56 52 75 10 61Z" fill="#8c7650" />
+        <path d="M52 56 87 41 87 60 52 75Z" fill="#626a42" />
+        <path d="M8 44 30 18 53 57Z" fill="#bc9862" />
+        <path d="M30 18 65 6 89 41 53 57Z" fill="#97ad63" />
+        <path d="M30 18 53 57 89 41" fill="none" stroke="#d1d491" stroke-width="4" />
+        <path d="M29 51 40 55 40 70 29 66Z" fill="#302f25" />
+        <path d="M15 49 23 52M15 55 23 58M59 60 78 52" fill="none" stroke="#d4b784" />
+      </g>
+    </g>
+    <path d="M11 66 43 77 78 65 77 73 43 82 11 72Z" fill="#789847" />
+    <path d="M21 61 25 53 28 63M68 66 73 56 76 63" fill="#b8ca6e" stroke="none" />
+  </g>
+</svg>

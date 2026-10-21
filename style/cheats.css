@@ -1,0 +1,81 @@
+/* Optional test tools; normal play keeps this panel and its badge hidden. */
+.cheat-panel {
+  position: absolute;
+  z-index: 9;
+  right: 12px;
+  top: calc(var(--top-height) + 16px);
+  width: min(440px, calc(100% - 24px));
+  max-height: calc(100% - var(--top-height) - 90px);
+  overflow: auto;
+  padding: 12px;
+  background: var(--cheat-panel-bg);
+  border: 1px solid var(--cheat-panel-border);
+  font-size: var(--font-small);
+}
+.cheat-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.cheat-panel fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.cheat-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+.cheat-toggle input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+.cheat-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0 10px;
+}
+.cheat-fields label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.cheat-fields input,
+.cheat-fields select {
+  width: 100%;
+  min-width: 0;
+  font-size: var(--font-small);
+}
+.cheat-building {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+.cheat-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+.cheat-panel button {
+  min-height: 32px;
+  font-size: var(--font-small);
+}
+#cheat-message {
+  color: var(--cheat-help-text);
+  line-height: 1.45;
+  margin: 12px 0 0;
+}
+#cheat-indicator {
+  min-height: 0;
+  padding: 1px 7px;
+  font-size: var(--font-small);
+  color: var(--cheat-active-text);
+  border-color: var(--cheat-active-border);
+  margin-left: auto;
+}

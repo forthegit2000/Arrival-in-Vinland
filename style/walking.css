@@ -1,0 +1,135 @@
+/* Walking mode console, hint, touch controls, and view-specific overrides. Responsive rules stay with their component. */
+
+#walk-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.walk-pad,
+body[data-view='walk'] .selection-panel,
+body[data-view='walk'] .viewport-tools button,
+body[data-view='walk'] .expedition-panel,
+body[data-view='walk'][data-conversation='true'] #walk-hint,
+body[data-view='walk'][data-conversation='true'] .walk-pad,
+.walk-console {
+  display: none;
+}
+
+body[data-view='walk'] {
+  --dock-height: calc(174px * var(--text-scale));
+}
+
+body[data-view='walk'] .walk-console {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  padding: 12px 18px;
+  color: var(--muted);
+  border-right: 2px solid var(--section-divider);
+}
+
+.walk-console strong {
+  font-size: calc(19px * var(--text-scale));
+  color: var(--walk-hint-text);
+}
+
+#walk-summary,
+.walk-conversation {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.walk-conversation p {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--font-body);
+}
+
+.conversation-orders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.conversation-orders button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+}
+
+.conversation-orders img {
+  width: 24px;
+  height: 24px;
+}
+
+.conversation-orders kbd {
+  font: inherit;
+  color: var(--conversation-name);
+}
+
+body[data-view='walk'][data-conversation='true'] {
+  --dock-height: calc(240px * var(--text-scale));
+}
+
+body[data-view='walk'][data-conversation='true'] .walk-console {
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+@media (max-width: 1000px) {
+  body[data-view='walk'][data-conversation='true'] {
+    --dock-height: calc(306px * var(--text-scale));
+  }
+}
+
+body[data-view='walk'] .date-widget {
+  border: 0;
+}
+
+@media (max-width: 700px) {
+  body[data-view='walk'] .walk-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    gap: 4px;
+    position: absolute;
+    left: 8px;
+    bottom: calc(var(--dock-height) + 60px);
+    z-index: 4;
+  }
+  .walk-pad button {
+    height: 40px;
+    font-size: 22px;
+    touch-action: none;
+  }
+  .walk-pad button:first-child {
+    grid-column: 2;
+  }
+  .walk-pad button:nth-child(2) {
+    grid-row: 2;
+    grid-column: 1;
+  }
+  .walk-pad button:nth-child(3) {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  .walk-pad button:nth-child(4) {
+    grid-row: 2;
+    grid-column: 3;
+  }
+  body[data-view='walk'] {
+    --dock-height: calc(214px * var(--text-scale));
+  }
+  body[data-view='walk'] .walk-console {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 5px 10px;
+    gap: 2px;
+  }
+}

@@ -1,0 +1,154 @@
+/* Management window frame, title bar, tabs, and scrolling. Responsive rules stay with their component. */
+
+dialog {
+  position: fixed;
+  inset: calc(var(--top-height) + 12px) auto auto 12px;
+  margin: 0;
+  padding: 0;
+  width: min(670px, calc(100vw - 24px));
+  max-width: none;
+  height: auto;
+  max-height: calc(100dvh - var(--top-height) - var(--dock-height) - 24px);
+  color: var(--ink);
+  background: var(--wood-grain), var(--window-bg);
+  border: 2px solid var(--window-border);
+  border-right-color: var(--window-border-dark);
+  border-bottom-color: var(--window-border-dark);
+  border-radius: 5px;
+  box-shadow:
+    inset 0 0 0 1px var(--frame-glow),
+    0 8px 24px var(--shadow-window);
+  font-size: var(--font-body);
+  z-index: 12;
+  overflow: hidden;
+}
+
+dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+dialog:not(.management-window) .window-tabs {
+  display: none;
+}
+
+.wide-modal {
+  width: min(950px, calc(100vw - 24px));
+}
+
+.window-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 38px;
+  padding: 4px 6px 4px 12px;
+  background:
+    var(--wood-grain), linear-gradient(var(--window-title-top), var(--window-title-bottom));
+  border-bottom: 1px solid var(--window-title-border);
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+  box-shadow:
+    inset 0 1px var(--frame-glow),
+    inset 0 -2px var(--frame-shade);
+}
+
+#window-title {
+  flex: 1;
+  font-size: var(--font-heading);
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+.window-pause {
+  font-size: var(--font-small);
+  color: var(--window-pause-text);
+}
+
+.close-modal {
+  font-size: 24px;
+  line-height: 1;
+  padding: 0 7px;
+  min-height: 27px;
+}
+
+.window-tabs {
+  display: flex;
+  gap: 3px;
+  padding: 4px 7px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--window-tabs-border);
+  background: var(--metal-sheen), var(--window-tabs-bg);
+}
+
+.window-tabs button {
+  font-size: var(--font-label);
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+#modal-content {
+  overflow: auto;
+  min-height: 0;
+  padding: 14px 20px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--window-scrollbar-thumb) var(--window-scrollbar-track);
+}
+
+dialog h2 {
+  font-size: var(--font-title);
+  margin: 0 0 12px;
+}
+
+dialog h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--font-heading);
+  color: var(--window-heading);
+  margin: 20px 0 9px;
+}
+
+dialog p {
+  color: var(--window-body-text);
+  font-size: var(--font-body);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+dialog .actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+@media (max-width: 700px) {
+  dialog,
+  .wide-modal {
+    left: 6px;
+    top: calc(var(--top-height) + 6px);
+    width: calc(100vw - 12px);
+    max-height: calc(100dvh - var(--top-height) - 20px);
+  }
+  #modal-content {
+    padding: 12px;
+  }
+  .window-pause {
+    display: none;
+  }
+  .window-titlebar {
+    padding-left: 9px;
+  }
+  .window-tabs button {
+    padding-inline: 8px;
+  }
+}
+
+dialog.document-window #modal-content {
+  color: var(--ink);
+  background: var(--paper-texture);
+  box-shadow: inset 0 0 18px var(--frame-glow);
+  scrollbar-color: var(--paper-muted) var(--paper);
+}

@@ -1,0 +1,52 @@
+/* Local fire tending panel; independent of the settlement management windows. */
+.hearth-panel {
+  position: absolute;
+  z-index: 7;
+  right: 16px;
+  top: calc(var(--top-height) + 72px);
+  width: min(410px, calc(100% - 24px));
+  max-height: calc(100% - 240px);
+  overflow-y: auto;
+  padding: 12px;
+  border: 1px solid var(--overlay-border);
+  background: var(--hearth-panel-bg);
+  box-shadow: 0 6px 22px var(--shadow-soft);
+  font-size: var(--font-small);
+  line-height: 1.45;
+}
+.hearth-panel header,
+.hearth-actions,
+.hearth-recipe {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hearth-panel header {
+  justify-content: space-between;
+}
+.hearth-panel p {
+  margin: 10px 0;
+}
+.hearth-panel button,
+.hearth-panel select {
+  min-height: 32px;
+  font-size: var(--font-small);
+}
+.hearth-recipe {
+  margin-top: 12px;
+}
+.hearth-recipe label {
+  display: grid;
+  gap: 3px;
+}
+#hearth-message {
+  color: var(--hearth-value);
+}
+@media (max-width: 650px) {
+  .hearth-panel {
+    right: 12px;
+    top: 80px;
+    max-height: calc(100% - 260px);
+  }
+}

@@ -1,0 +1,278 @@
+/* Dedicated Atlantic screen. The local settlement stays mounted behind it. */
+.atlantic-screen {
+  position: absolute;
+  inset: var(--top-height) 0 0;
+  z-index: 6;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--dark);
+}
+
+body[data-screen='atlantic']
+  :is(
+    #world,
+    #world-labels,
+    .simulation-console,
+    .viewport-tools,
+    .pause-indicator,
+    .walk-pad,
+    #walk-hint,
+    #event-notice
+  ) {
+  visibility: hidden;
+}
+
+.atlantic-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border-bottom: 2px solid var(--atlantic-header-border);
+}
+
+.atlantic-header h1 {
+  margin: 0;
+  font-size: var(--font-heading);
+}
+
+.atlantic-header nav,
+.atlantic-clock,
+.atlantic-map-tools {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.atlantic-clock {
+  margin-left: auto;
+  gap: 12px;
+}
+
+.atlantic-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) calc(320px * var(--text-scale));
+  min-height: 0;
+}
+
+.atlantic-chart {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--atlantic-ocean);
+}
+
+.atlantic-map {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+
+.atlantic-map:active {
+  cursor: grabbing;
+}
+
+.atlantic-map text {
+  font-family: Arial, Helvetica, sans-serif;
+  fill: var(--atlantic-label-text);
+  paint-order: stroke;
+  stroke: var(--atlantic-ocean);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.atlantic-land-labels {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.atlantic-routes path {
+  fill: none;
+  stroke: var(--atlantic-route);
+  stroke-width: 2;
+  stroke-dasharray: 6 7;
+  vector-effect: non-scaling-stroke;
+}
+
+.atlantic-routes .selected-route {
+  stroke: var(--atlantic-route-selected);
+  stroke-width: 3;
+}
+
+.atlantic-ports [data-port] {
+  cursor: pointer;
+}
+
+.atlantic-ports circle {
+  fill: var(--atlantic-harbour);
+  stroke: var(--atlantic-harbour-border);
+  stroke-width: 2;
+}
+
+.atlantic-ports .port-hit-area {
+  fill: var(--transparent);
+  stroke: none;
+}
+
+.atlantic-ports .selected-port circle:not(.port-hit-area) {
+  fill: var(--atlantic-ship);
+  stroke: var(--atlantic-ship-border);
+}
+
+.atlantic-ships circle {
+  fill: var(--atlantic-ship);
+  stroke: var(--atlantic-home-border);
+  stroke-width: 2;
+}
+
+.atlantic-map-tools {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px;
+  background: var(--atlantic-legend-bg);
+  border: 1px solid var(--atlantic-legend-border);
+}
+
+.atlantic-map-tools button {
+  min-width: 36px;
+}
+
+.atlantic-map-credit {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  padding: 3px 6px;
+  background: var(--atlantic-sources-bg);
+  color: var(--atlantic-sources-text);
+  font-size: var(--font-small);
+}
+
+.atlantic-sidebar {
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+  background: var(--panel);
+  border-left: 2px solid var(--voyage-route-border);
+}
+
+.atlantic-sidebar h2 {
+  margin: 0 0 8px;
+  font-size: var(--font-body);
+}
+
+.atlantic-sidebar p {
+  margin: 6px 0;
+  color: var(--muted);
+}
+
+.atlantic-sidebar .warning-text {
+  color: var(--warning-text);
+}
+
+.atlantic-harbours {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.atlantic-port-detail,
+.atlantic-voyage-form {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.atlantic-voyage-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.atlantic-cargo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.atlantic-sidebar .info-row {
+  font-size: var(--font-small);
+  gap: 8px;
+}
+
+#atlantic-launch {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.atlantic-journey {
+  border-top: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+.atlantic-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 12px;
+  background: var(--statusbar-bg);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .atlantic-header {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding: 8px;
+  }
+  .atlantic-clock {
+    margin-left: 0;
+  }
+  .atlantic-workspace {
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+}
+
+@media (max-width: 700px) {
+  .atlantic-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(220px, 1fr) minmax(0, 45%);
+  }
+  .atlantic-header h1 {
+    font-size: var(--font-body);
+  }
+  .atlantic-header nav {
+    margin-left: auto;
+  }
+  .atlantic-header button {
+    padding: 4px 7px;
+  }
+  .atlantic-clock {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .atlantic-sidebar {
+    border-left: 0;
+    border-top: 2px solid var(--voyage-route-border);
+  }
+  .atlantic-footer {
+    display: block;
+    padding: 5px 8px;
+  }
+  .atlantic-footer span {
+    display: block;
+  }
+  .atlantic-land-labels {
+    display: none;
+  }
+  .atlantic-map-credit {
+    right: 8px;
+  }
+}

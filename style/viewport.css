@@ -1,0 +1,320 @@
+/* World canvas, labels, camera tools, inspector, and notifications. Responsive rules stay with their component. */
+
+#game {
+  position: absolute;
+  inset: 0;
+}
+
+#world {
+  position: absolute;
+  inset: var(--top-height) 0 var(--dock-height);
+}
+
+#world canvas {
+  display: block;
+  touch-action: none;
+}
+
+#world-labels {
+  position: absolute;
+  inset: var(--top-height) 0 var(--dock-height);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* A stable viewport keeps people under the cursor as the dock opens/closes. */
+body[data-view='district'] #world,
+body[data-view='district'] #world-labels {
+  bottom: calc(26px * var(--text-scale));
+}
+
+.world-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  background: var(--world-label-hover-bg);
+  color: var(--world-label-hover-text);
+  border: 1px solid var(--world-label-hover-border);
+  padding: 3px 8px;
+  min-height: 25px;
+  font-size: var(--font-small);
+}
+
+.viewport-tools {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--top-height) + 10px);
+  right: 10px;
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  background: var(--wood-grain), var(--camera-controls-bg);
+  border: 1px solid var(--camera-controls-border);
+}
+
+.viewport-tools button {
+  min-width: 34px;
+  padding: 3px 7px;
+  font-size: var(--font-heading);
+}
+
+.viewport-tools #roof-toggle {
+  font-size: var(--font-small);
+}
+
+.pause-indicator {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--top-height) + 12px);
+  left: 12px;
+  color: var(--terrain-credit-text);
+  background: var(--terrain-credit-bg);
+  padding: 5px 9px;
+  border-left: 3px solid var(--terrain-credit-border);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.inspector {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.inspector header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px 4px 10px;
+  background:
+    var(--wood-grain), linear-gradient(var(--inspector-title-top), var(--inspector-title-bottom));
+  border-bottom: 1px solid var(--inspector-title-border);
+  flex-shrink: 0;
+}
+
+.inspector header button {
+  padding: 0 7px;
+  font-size: 20px;
+}
+
+#inspect-content {
+  padding: 6px 10px;
+  min-height: 0;
+  overflow: auto;
+}
+
+#inspect-content p {
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+#inspect-content .info-row {
+  padding: 2px 0;
+  font-size: var(--font-small);
+}
+
+.selection-inventory {
+  margin-top: 6px;
+}
+
+.selection-stock-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  gap: 3px 14px;
+}
+
+.selection-stock {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+#inspect-content .actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.contextual-hints {
+  position: absolute;
+  z-index: 4;
+  bottom: calc(var(--dock-height) + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 24px);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 5px 8px 5px 12px;
+  background: var(--metal-sheen), var(--walk-panel-bg);
+  border: 1px solid var(--overlay-border);
+  box-shadow: 0 2px 0 var(--walk-panel-shadow);
+}
+
+.contextual-hints > #controls-hint {
+  font-size: var(--font-label);
+}
+
+body[data-screen='atlantic'] .contextual-hints,
+body[data-view='walk'][data-conversation='true'] .contextual-hints {
+  display: none;
+}
+
+.placement-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.placement-banner > span {
+  flex: 1;
+}
+
+.placement-banner button {
+  white-space: nowrap;
+}
+
+.event-notice {
+  position: absolute;
+  z-index: 4;
+  top: calc(var(--top-height) + 54px);
+  right: 10px;
+  max-width: 450px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  background: var(--event-notice-bg);
+  border: 1px solid var(--event-notice-border);
+  border-left: 4px solid var(--event-notice-accent);
+  box-shadow: 2px 3px 0 var(--event-notice-shadow);
+}
+
+.event-notice > span {
+  flex: 1;
+}
+
+#event-dismiss {
+  font-size: 20px;
+  padding: 0 6px;
+}
+
+#toast {
+  position: absolute;
+  z-index: 20;
+  bottom: calc(var(--dock-height) + 58px);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 620px;
+  background: var(--toast-bg);
+  border: 1px solid var(--toast-border);
+  padding: 9px 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+#toast.visible {
+  opacity: 1;
+}
+
+#loading,
+#error {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: var(--loading-bg);
+}
+
+#loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 0.4s;
+}
+
+#loading.ready {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#loading h2 {
+  font-size: 26px;
+  margin: 0;
+  color: var(--loading-title);
+}
+
+#loading p {
+  color: var(--muted);
+}
+
+#error {
+  padding: 15vh 15vw;
+}
+
+.contextual-hints:has(.placement-banner.invalid:not([hidden])) {
+  border-color: var(--error-border);
+}
+
+.placement-banner.invalid > span {
+  color: var(--error-text);
+}
+
+@media (max-width: 700px) {
+  .viewport-tools {
+    top: calc(var(--top-height) + 8px);
+    right: 6px;
+  }
+  .viewport-tools button {
+    min-width: 30px;
+  }
+  .pause-indicator {
+    top: calc(var(--top-height) + 55px);
+    left: 8px;
+  }
+  .contextual-hints {
+    left: 8px;
+    right: 8px;
+    transform: none;
+    max-width: none;
+    gap: 5px;
+    padding: 5px;
+  }
+  .placement-banner {
+    width: 100%;
+    gap: 5px;
+  }
+  .placement-banner > span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .placement-banner kbd {
+    display: none;
+  }
+  .placement-banner button {
+    padding-inline: 7px;
+  }
+  .event-notice {
+    right: 8px;
+    left: 8px;
+    top: calc(var(--top-height) + 91px);
+    max-width: none;
+  }
+  .event-notice > span {
+    max-height: 65px;
+    overflow: auto;
+  }
+  #toast {
+    width: calc(100% - 16px);
+    max-width: none;
+  }
+}
