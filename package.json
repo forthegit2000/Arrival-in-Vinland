@@ -1,0 +1,39 @@
+{
+  "name": "vinland",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An offline browser simulation of a Norse settlement",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test tests/simulation.cjs tests/atlantic.cjs tests/terrain.cjs tests/audio.cjs tests/workers.cjs tests/collision.cjs tests/conversation.cjs tests/gathering.cjs tests/building-spaces.cjs tests/storage.cjs tests/hearths.cjs tests/cheats.cjs tests/work-timing.cjs tests/solar.cjs tests/doors.cjs tests/color-palette.cjs tests/arrival.cjs",
+    "test:browser": "node tests/browser.cjs",
+    "check": "npm run check:colors && npm run format:check && npm test",
+    "test:weather": "node tests/weather-browser.cjs",
+    "test:audio": "node tests/audio-browser.cjs",
+    "test:workers": "node tests/workers-browser.cjs",
+    "test:selection": "node tests/building-selection-browser.cjs",
+    "test:collision": "node tests/collision-browser.cjs",
+    "test:conversation": "node tests/conversation-browser.cjs",
+    "test:walking": "node tests/walking-browser.cjs",
+    "test:interiors": "node tests/interiors-browser.cjs",
+    "test:indoor-camera": "node tests/indoor-camera-browser.cjs",
+    "test:timing": "node tests/work-timing-browser.cjs",
+    "test:cheats": "node tests/cheats-browser.cjs",
+    "test:hearths": "node tests/hearths-browser.cjs",
+    "test:storage": "node tests/storage-browser.cjs",
+    "test:sky": "node tests/sky-browser.cjs",
+    "test:doors": "node tests/doors-browser.cjs",
+    "test:startup": "node tests/startup-browser.cjs",
+    "test:menus": "node tests/menu-ui-browser.cjs",
+    "check:colors": "node tools/check-colors.cjs",
+    "test:characters": "node tests/characters-browser.cjs",
+    "test:arrival": "node tests/arrival-browser.cjs"
+  },
+  "devDependencies": {
+    "geotiff": "3.0.5",
+    "playwright": "1.64.1",
+    "prettier": "3.6.2",
+    "proj4": "2.22.0"
+  }
+}

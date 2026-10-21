@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#283340" />
+    <title>Arrival in Vinland</title>
+    <!-- Shared controls first, component styles next, walking overrides last. -->
+    <link rel="stylesheet" href="style/color-palette.css" />
+    <link rel="stylesheet" href="style/base.css" />
+    <link rel="stylesheet" href="style/hud.css" />
+    <link rel="stylesheet" href="style/construction.css" />
+    <link rel="stylesheet" href="style/workers.css" />
+    <link rel="stylesheet" href="style/viewport.css" />
+    <link rel="stylesheet" href="style/windows.css" />
+    <link rel="stylesheet" href="style/management.css" />
+    <link rel="stylesheet" href="style/menus.css" />
+    <link rel="stylesheet" href="style/walking.css" />
+    <link rel="stylesheet" href="style/hearth.css" />
+    <link rel="stylesheet" href="style/cheats.css" />
+    <link rel="stylesheet" href="style/atlantic.css" />
+    <script defer src="vendor/three.min.js"></script>
+    <script defer src="content.js"></script>
+    <script defer src="assets/terrain/meadows-data.js"></script>
+    <script defer src="meadows-geography.js"></script>
+    <script defer src="solar.js"></script>
+    <script defer src="collision.js"></script>
+    <script defer src="building-spaces.js"></script>
+    <script defer src="doors.js"></script>
+    <script defer src="storage.js"></script>
+    <script defer src="supplies.js"></script>
+    <script defer src="hearths.js"></script>
+    <script defer src="logistics.js"></script>
+    <script defer src="work-timing.js"></script>
+    <script defer src="production-processes.js"></script>
+    <script defer src="gathering.js"></script>
+    <script defer src="worker-orders.js"></script>
+    <script defer src="cheats.js"></script>
+    <script defer src="arrival.js"></script>
+    <script defer src="idle-people.js"></script>
+    <script defer src="simulation.js"></script>
+    <script defer src="assets/models/knarr-data.js"></script>
+    <script defer src="knarr-model.js"></script>
+    <script defer src="world-models.js"></script>
+    <script defer src="water-shading.js"></script>
+    <script defer src="freshwater-models.js"></script>
+    <script defer src="world.js"></script>
+    <script defer src="weather.js"></script>
+    <script defer src="sky.js"></script>
+    <script defer src="character-models.js"></script>
+    <script defer src="world-expansion.js"></script>
+    <script defer src="world-harvesting.js"></script>
+    <script defer src="interior-presentation.js"></script>
+    <script defer src="door-controls.js"></script>
+    <script defer src="world-interiors.js"></script>
+    <script defer src="arrival-world.js"></script>
+    <script defer src="controls.js"></script>
+    <script defer src="interface.js"></script>
+    <script defer src="hud.js"></script>
+    <script defer src="atlantic-geography.js"></script>
+    <script defer src="atlantic.js"></script>
+    <script defer src="audio.js"></script>
+    <script defer src="arrival-controls.js"></script>
+    <script defer src="worker-controls.js"></script>
+    <script defer src="conversation.js"></script>
+    <script defer src="hearth-controls.js"></script>
+    <script defer src="supply-controls.js"></script>
+    <script defer src="cheat-controls.js"></script>
+    <script defer src="game.js"></script>
+  </head>
+  <body>
+    <main id="game" inert>
+      <div id="world" aria-label="Interactive 3D Norse settlement"></div>
+      <section id="atlantic-screen" class="atlantic-screen" aria-label="North Atlantic" hidden>
+        <header class="atlantic-header">
+          <h1>North Atlantic</h1>
+          <nav aria-label="Game view">
+            <button data-atlantic="district">District</button>
+            <button data-atlantic="walk">Walk</button>
+            <button class="active" aria-current="page" data-atlantic="chart">Atlantic</button>
+          </nav>
+          <div class="atlantic-clock">
+            <span id="atlantic-date"></span>
+            <button data-atlantic="pause" id="atlantic-pause">Resume</button>
+          </div>
+        </header>
+        <div class="atlantic-workspace">
+          <div class="atlantic-chart">
+            <svg
+              id="atlantic-map"
+              class="atlantic-map"
+              viewBox="0 0 1200 840"
+              aria-label="Geographic North Atlantic map; select a harbour or use the harbour buttons"
+              tabindex="0"
+            >
+              <image href="assets/maps/north-atlantic.svg" width="1200" height="840" />
+              <g id="atlantic-land-labels" class="atlantic-land-labels"></g>
+              <g id="atlantic-routes" class="atlantic-routes"></g>
+              <g id="atlantic-ports" class="atlantic-ports"></g>
+              <g id="atlantic-ships" class="atlantic-ships"></g>
+            </svg>
+            <div class="atlantic-map-tools" aria-label="Map controls">
+              <button data-atlantic="zoom-in" aria-label="Zoom in on Atlantic">+</button>
+              <button data-atlantic="zoom-out" aria-label="Zoom out of Atlantic">−</button>
+              <button data-atlantic="fit">Fit map</button>
+            </div>
+            <div class="atlantic-map-credit">Coastlines: Natural Earth · modern reference</div>
+          </div>
+          <aside class="atlantic-sidebar" aria-label="Voyages and harbours">
+            <nav class="atlantic-harbours" aria-label="Choose a harbour">
+              <button data-port="home">Newfoundland</button>
+              <button data-port="greenland">Greenland</button>
+              <button data-port="iceland">Iceland</button>
+            </nav>
+            <section class="atlantic-port-detail">
+              <h2 id="atlantic-port-name"></h2>
+              <p id="atlantic-port-description"></p>
+              <p id="atlantic-port-coordinate"></p>
+              <div id="atlantic-route-summary"></div>
+            </section>
+            <form id="atlantic-voyage-form" class="atlantic-voyage-form">
+              <h2>Plan voyage</h2>
+              <label>
+                Knarr
+                <select id="atlantic-ship"></select>
+              </label>
+              <div class="atlantic-cargo">
+                <label>
+                  Crew
+                  <input id="atlantic-crew" type="number" min="6" max="16" value="8" required />
+                </label>
+                <label>
+                  Timber · m³
+                  <input id="atlantic-timber" type="number" min="0" step="0.5" value="6" required />
+                </label>
+              </div>
+              <div id="atlantic-quote"></div>
+              <p id="atlantic-blocked" class="warning-text" role="status"></p>
+              <button type="submit" id="atlantic-launch" class="primary">Launch voyage</button>
+            </form>
+            <section class="atlantic-journeys">
+              <h2>Journeys</h2>
+              <div id="atlantic-journey-list"></div>
+            </section>
+          </aside>
+        </div>
+        <footer class="atlantic-footer">
+          <span>Drag to pan · Wheel or + / − to zoom</span>
+          <span>Routes and ship positions are estimates.</span>
+        </footer>
+      </section>
+      <header class="topbar">
+        <a class="brand" href="#" title="Center on camp">ARRIVAL IN VINLAND</a>
+        <div class="resources" id="resources" role="group" aria-label="Resources"></div>
+        <div class="top-actions">
+          <button
+            id="manage-button"
+            class="menu-toggle"
+            aria-label="Game menu"
+            aria-haspopup="dialog"
+            aria-controls="modal"
+            aria-expanded="false"
+          >
+            <img src="assets/menu/settings.svg" alt="" aria-hidden="true" />
+          </button>
+        </div>
+      </header>
+      <div id="world-labels" aria-label="Settlement landmarks"></div>
+      <div class="viewport-tools" aria-label="Camera controls">
+        <button id="camera-left" title="Hold to rotate left (Q); Shift doubles speed">↶</button>
+        <button id="camera-right" title="Hold to rotate right (E); Shift doubles speed">↷</button>
+        <button id="zoom-in" title="Zoom in (+)">+</button>
+        <button id="zoom-out" title="Zoom out (−)">−</button>
+        <button id="map-overview" title="Show whole map" aria-label="Show whole map">▣</button>
+        <button id="center" title="Center on camp (C)">⌖</button>
+        <button id="roof-toggle" title="Building roof cutaway (H)">Cutaway</button>
+      </div>
+      <div id="pause-indicator" class="pause-indicator">PAUSED</div>
+      <section class="simulation-console" aria-label="Settlement controls">
+        <nav class="command-strip" aria-label="Management commands">
+          <button id="mobile-walk" class="mobile-command">Walk</button>
+          <button id="mobile-atlantic" class="mobile-command">Atlantic</button>
+          <button class="management-command" data-action="settlement" aria-label="Settlement">
+            <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+              <path class="icon-turf" d="M3 22 10 10h20l7 12-6 3H9Z" />
+              <path class="icon-timber" d="M8 22h24v12H8Z" />
+              <path class="icon-ink" d="M17 25h6v9h-6Z" />
+              <path class="icon-trim" d="m4 23 16-15 16 15-2 2L20 12 6 25Z" />
+              <path class="icon-trim" d="M10 26h3v5h-3Zm17 0h3v5h-3Z" />
+            </svg>
+            <span class="command-tooltip" role="tooltip">Settlement</span>
+          </button>
+          <button class="management-command" data-action="exploration" aria-label="Exploration">
+            <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+              <path class="icon-timber" d="m3 24 7 4h23l5-6-3 10-7 3H13l-7-4Z" />
+              <path class="icon-trim" d="M18 5h2v24h-2Z" />
+              <path class="icon-sail" d="M21 7q9 2 12 14H21ZM17 8Q9 11 8 23h9Z" />
+              <path class="icon-water" d="M4 36q4-3 8 0t8 0 8 0 8 0v2H4Z" />
+            </svg>
+            <span class="command-tooltip" role="tooltip">Exploration</span>
+          </button>
+          <button
+            id="activity-button"
+            class="management-command"
+            data-action="activity"
+            aria-label="Activity"
+          >
+            <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+              <path class="icon-timber" d="M8 5h22v4H8Zm2 26h23v5H10Z" />
+              <path class="icon-sail" d="M10 7h21q-4 5-2 13l2 12H10q-3-6-1-13t1-12Z" />
+              <path class="icon-ink" d="M14 12h11v2H14Zm0 5h10v2H14Zm0 5h11v2H14Zm0 5h8v2h-8Z" />
+            </svg>
+            <span id="activity-projects" class="command-count" aria-hidden="true" hidden></span>
+            <span id="activity-warnings" class="command-count" aria-hidden="true" hidden></span>
+            <span id="activity-tooltip" class="command-tooltip" role="tooltip">Activity</span>
+          </button>
+        </nav>
+        <section class="map-block">
+          <div class="map-heading">
+            <span id="settlement-name">L’Anse aux Meadows</span>
+            <span id="map-scale">100 m</span>
+          </div>
+          <canvas
+            id="minimap"
+            width="220"
+            height="160"
+            aria-label="Settlement minimap; click to move camera"
+          ></canvas>
+          <div class="view-switch" aria-label="Game view">
+            <button id="district-view" class="active">District</button>
+            <button id="walk-view" title="Walk as Karlsefni with WASD">Walk</button>
+            <button id="atlantic-view">Atlantic</button>
+          </div>
+          <div id="selection-empty" class="selection-empty">
+            <button id="select-idle-workers" data-worker-action="idle">Select idle workers</button>
+            <button id="selection-cheat-build" hidden>
+              <img src="assets/buildings/turfhouse.svg" alt="" />
+              Build
+            </button>
+          </div>
+          <div class="map-footer" hidden><span>Hall F</span></div>
+        </section>
+        <section
+          id="selection-panel"
+          class="selection-panel"
+          data-context="none"
+          aria-label="Selection and orders"
+        >
+          <aside class="build-panel" aria-label="Worker orders and construction" hidden>
+            <section id="worker-orders" class="worker-orders">
+              <strong id="worker-selection-title"></strong>
+              <span id="worker-selection-summary"></span>
+              <div class="worker-actions">
+                <button data-worker-action="move" disabled>
+                  <img src="assets/menu/resume.svg" alt="" />
+                  Move
+                </button>
+                <div class="worker-gathering-actions" role="group" aria-label="Gather resources">
+                  <span>Gather</span>
+                  <button
+                    data-worker-action="gather"
+                    data-resource="timber"
+                    aria-label="Gather logs"
+                    disabled
+                  >
+                    <img src="assets/resources/timber.svg" alt="" />
+                    Logs
+                  </button>
+                  <button
+                    data-worker-action="gather"
+                    data-resource="turf"
+                    aria-label="Gather turf"
+                    disabled
+                  >
+                    <img src="assets/resources/turf.svg" alt="" />
+                    Turf
+                  </button>
+                  <button
+                    data-worker-action="gather"
+                    data-resource="firewood"
+                    aria-label="Gather firewood"
+                    disabled
+                  >
+                    <img src="assets/resources/firewood.svg" alt="" />
+                    Firewood
+                  </button>
+                  <button
+                    data-worker-action="gather"
+                    data-resource="hay"
+                    aria-label="Gather hay"
+                    disabled
+                  >
+                    <img src="assets/resources/hay.svg" alt="" />
+                    Hay
+                  </button>
+                </div>
+                <button data-worker-action="work-menu" disabled>
+                  <img src="assets/buildings/fishing.svg" alt="" />
+                  Work
+                </button>
+                <div
+                  id="worker-work-options"
+                  class="worker-gathering-actions"
+                  role="group"
+                  aria-label="Work assignments"
+                  hidden
+                >
+                  <button data-worker-action="work-back">‹ Orders</button>
+                  <button data-worker-action="supply-camp">
+                    <img src="assets/buildings/storehouse.svg" alt="" />
+                    Supply camp
+                  </button>
+                  <button data-worker-action="haul">
+                    <img src="assets/resources/timber.svg" alt="" />
+                    Supply building
+                  </button>
+                  <button data-worker-action="work" data-resource="fishing">
+                    <img src="assets/buildings/fishing.svg" alt="" />
+                    Fishing
+                  </button>
+                  <button data-worker-action="work" data-resource="foraging">
+                    <img src="assets/resources/food.svg" alt="" />
+                    Foraging
+                  </button>
+                  <button data-worker-action="work" data-resource="herding">
+                    <img src="assets/resources/water.svg" alt="" />
+                    Camp care
+                  </button>
+                  <button data-worker-action="work" data-resource="craft">
+                    <img src="assets/resources/iron.svg" alt="" />
+                    Crafting
+                  </button>
+                </div>
+                <button data-worker-action="build" disabled>
+                  <img src="assets/buildings/turfhouse.svg" alt="" />
+                  Build
+                </button>
+                <button data-worker-action="shelter" disabled>
+                  <img src="assets/buildings/turfhouse.svg" alt="" />
+                  Shelter
+                </button>
+                <button data-worker-action="stop" disabled>
+                  <img src="assets/menu/quit.svg" alt="" />
+                  Stop
+                </button>
+              </div>
+              <span id="worker-order-status" hidden></span>
+            </section>
+            <div id="construction-palette" hidden>
+              <div class="build-tabs" role="tablist" aria-label="Building categories">
+                <button data-worker-action="back">‹ Orders</button>
+                <button role="tab" data-category="shelter" aria-selected="true" class="active">
+                  Shelter
+                </button>
+                <button role="tab" data-category="craft" aria-selected="false">Craft</button>
+                <button role="tab" data-category="food" aria-selected="false">Food</button>
+                <div class="palette-scroll-controls">
+                  <button id="palette-prev" aria-label="Previous buildings">‹</button>
+                  <button id="palette-next" aria-label="More buildings">›</button>
+                </div>
+              </div>
+              <div class="build-scroll" id="build-list"></div>
+            </div>
+          </aside>
+          <aside id="inspector" class="inspector" hidden>
+            <header>
+              <strong id="inspect-name"></strong>
+              <button id="close-inspector" aria-label="Close inspection">×</button>
+            </header>
+            <div id="inspect-content">
+              <div id="inspect-details"></div>
+              <div id="inspect-actions" class="actions"></div>
+            </div>
+          </aside>
+        </section>
+        <section class="walk-console">
+          <div id="walk-summary">
+            <strong id="walk-leader">Karlsefni</strong>
+            <div id="walk-state"></div>
+          </div>
+          <section
+            id="walk-conversation"
+            class="walk-conversation"
+            aria-label="Conversation"
+            hidden
+          >
+            <strong></strong>
+            <p role="status"></p>
+            <div class="conversation-orders" role="group" aria-label="Give orders">
+              <button data-conversation="timber">
+                <kbd>1</kbd>
+                <img src="assets/resources/timber.svg" alt="" />
+                Logs
+              </button>
+              <button data-conversation="turf">
+                <kbd>2</kbd>
+                <img src="assets/resources/turf.svg" alt="" />
+                Turf
+              </button>
+              <button data-conversation="firewood">
+                <kbd>3</kbd>
+                <img src="assets/resources/firewood.svg" alt="" />
+                Firewood
+              </button>
+              <button data-conversation="hay">
+                <kbd>4</kbd>
+                <img src="assets/resources/hay.svg" alt="" />
+                Hay
+              </button>
+              <button data-conversation="landing" hidden>
+                <kbd>5</kbd>
+                <img src="assets/buildings/boatyard.svg" alt="" />
+                Landing orders
+              </button>
+              <button data-conversation="arrival-land" hidden>
+                <kbd>1</kbd>
+                <img src="assets/buildings/boatyard.svg" alt="" />
+                Land people
+              </button>
+              <button data-conversation="arrival-unload" hidden>
+                <kbd>2</kbd>
+                <img src="assets/buildings/storehouse.svg" alt="" />
+                Unload cargo
+              </button>
+              <button data-conversation="arrival-livestock" hidden>
+                <kbd>3</kbd>
+                <img src="assets/buildings/boatyard.svg" alt="" />
+                Land livestock
+              </button>
+              <button data-conversation="arrival-pitch" hidden>
+                <kbd>4</kbd>
+                <img src="assets/buildings/tentbudir.svg" alt="" />
+                Pitch tent · 2 h
+              </button>
+              <button data-conversation="landing-back" hidden>
+                <kbd>5</kbd>
+                Back
+              </button>
+              <button data-conversation="stop">
+                <kbd>0</kbd>
+                Stop
+              </button>
+              <button data-conversation="leave">
+                <kbd>E / Esc</kbd>
+                Leave
+              </button>
+            </div>
+          </section>
+        </section>
+        <aside class="camp-console">
+          <section class="expedition-panel">
+            <div class="camp-numbers">
+              <div class="crew-row">
+                <strong id="population">160</strong>
+                <span>people</span>
+              </div>
+              <div class="shelter-status">
+                <div>
+                  <span>Sheltered</span>
+                  <strong id="shelter-number">80 / 160</strong>
+                </div>
+                <div class="meter"><i id="shelter-bar"></i></div>
+              </div>
+            </div>
+            <small id="winter-shelter">0 winter berths</small>
+          </section>
+          <section class="date-widget" aria-label="Date and weather">
+            <div class="date-line">
+              <span id="date">1 Aug 1005 AD</span>
+              <span id="daytime">08:00</span>
+              <strong id="temperature">12°</strong>
+            </div>
+            <div class="weather-line">
+              <span id="weather">Fair winds</span>
+              <span id="winter-days">Winter in 92 days</span>
+            </div>
+            <div class="time-controls">
+              <button id="pause" title="Space: pause or resume" aria-label="Resume time">▶</button>
+              <button data-speed="1" class="active">1×</button>
+              <button data-speed="3">3×</button>
+              <button data-speed="8">8×</button>
+            </div>
+          </section>
+        </aside>
+        <div class="status-bar">
+          <span id="site-coordinates"></span>
+          <button id="cheat-indicator" hidden>CHEATS</button>
+        </div>
+      </section>
+      <section id="cheat-panel" class="cheat-panel" aria-label="Testing cheats" hidden></section>
+      <div id="worker-selection-box" hidden aria-hidden="true"></div>
+      <div
+        id="contextual-hints"
+        class="contextual-hints"
+        role="group"
+        aria-label="Current actions"
+        hidden
+      >
+        <span id="controls-hint" hidden></span>
+        <div id="walk-hint" aria-label="Nearby actions" hidden>
+          <button id="interact-button" hidden>E · Speak</button>
+          <button id="hearth-button" hidden>F · Hearth</button>
+          <button id="supply-button" hidden>G · Supplies</button>
+        </div>
+        <div id="placement-banner" class="placement-banner" hidden>
+          <span id="placement-text"></span>
+          <button id="rotate-left" title="Hold to rotate counterclockwise; Shift doubles speed">
+            ↶
+            <kbd>T</kbd>
+          </button>
+          <button id="rotate" title="Hold to rotate clockwise; Shift doubles speed">
+            ↷
+            <kbd>R</kbd>
+          </button>
+          <button id="cancel-place">
+            Cancel
+            <kbd>Esc</kbd>
+          </button>
+        </div>
+      </div>
+      <section
+        id="hearth-panel"
+        class="hearth-panel"
+        aria-label="Hearth and cooking"
+        hidden
+      ></section>
+      <div class="walk-pad" aria-label="Walking controls">
+        <button data-move="KeyW" aria-label="Walk forward">↑</button>
+        <button data-move="KeyA" aria-label="Walk left">←</button>
+        <button data-move="KeyS" aria-label="Walk backward">↓</button>
+        <button data-move="KeyD" aria-label="Walk right">→</button>
+      </div>
+      <div id="event-notice" class="event-notice" hidden>
+        <span id="event-text"></span>
+        <button id="event-open">Reports</button>
+        <button id="event-dismiss" aria-label="Dismiss notification">×</button>
+      </div>
+      <div id="resource-tooltip" class="resource-tooltip" role="tooltip" hidden>
+        <strong></strong>
+        <span></span>
+      </div>
+      <div id="loading">
+        <h2>ARRIVAL IN VINLAND</h2>
+        <p>Loading…</p>
+      </div>
+      <div id="error" hidden>
+        <h2>The scene could not start</h2>
+        <p id="error-message"></p>
+        <p>Use a browser with WebGL enabled and keep the vendor folder beside index.html.</p>
+      </div>
+    </main>
+    <div id="toast" role="status"></div>
+    <section id="title-screen" class="title-screen" aria-label="Main menu" hidden></section>
+    <dialog id="modal" aria-labelledby="window-title">
+      <header class="window-titlebar">
+        <img id="window-icon" alt="" hidden />
+        <strong id="window-title">Settlement</strong>
+        <span class="window-pause">Time paused</span>
+        <button id="close-modal" class="close-modal" aria-label="Close window">×</button>
+      </header>
+      <nav class="window-tabs" aria-label="Management pages"></nav>
+      <div id="modal-content"></div>
+      <div id="window-footer" hidden></div>
+    </dialog>
+    <input id="import-file" type="file" accept=".json,application/json" hidden />
+  </body>
+</html>
